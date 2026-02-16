@@ -1,25 +1,30 @@
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
-import { FILTERS } from "../data/constants";
+import { useSpotFilters } from "../hooks/useSpotFilters";
+import FiltersBar from "../components/FiltersBar";
 import SpotCard from "../components/SpotCard";
 import SpotModal from "../components/SpotModal";
 
 export default function HomePage() {
-  const [activeFilter, setActiveFilter] = useState("All");
   const [selectedSpot, setSelectedSpot] = useState(null);
   const { data: spots, loading: spotsLoading, error: spotsError } = useApi("/spots");
   const { data: trends, loading: trendsLoading } = useApi("/trends");
 
-  const filtered =
-    !spots
-      ? []
-      : activeFilter === "All"
-        ? spots
-        : spots.filter((s) =>
-            s.tags.some(
-              (t) => t.toLowerCase() === activeFilter.toLowerCase().replace(" ", "-")
-            )
-          );
+  const {
+    filteredSpots,
+    search,
+    setSearch,
+    activeType,
+    setActiveType,
+    activePrices,
+    togglePrice,
+    activeTags,
+    toggleTag,
+    availableTags,
+    hasActiveFilters,
+    clearFilters,
+    resultCount,
+  } = useSpotFilters(spots);
 
   const hotTrends = trends ? trends.filter((t) => t.hot).slice(0, 3) : [];
 
@@ -48,19 +53,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Quick Filters */}
-      <div className="filter-row">
-        {FILTERS.slice(0, 10).map((f) => (
-          <button
-            key={f}
-            onClick={() => setActiveFilter(f)}
-            className={`pill-btn${activeFilter === f ? " pill-btn--active" : ""}`}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
 
       {/* What's Hot */}
       <section style={{ marginBottom: 32 }}>
@@ -159,23 +151,40 @@ export default function HomePage() {
             </p>
           </div>
         </div>
+
+        <FiltersBar
+          search={search}
+          onSearchChange={setSearch}
+          activeType={activeType}
+          onTypeChange={setActiveType}
+          activePrices={activePrices}
+          onPriceToggle={togglePrice}
+          activeTags={activeTags}
+          onTagToggle={toggleTag}
+          availableTags={availableTags}
+          hasActiveFilters={hasActiveFilters}
+          onClear={clearFilters}
+          resultCount={resultCount}
+          compact
+        />
+
         {spotsLoading ? (
           <div className="loading-state">Loading spots...</div>
         ) : spotsError ? (
           <div className="error-state">
             <p>Failed to load spots. Please try again later.</p>
           </div>
-        ) : filtered.length === 0 ? (
+        ) : filteredSpots.length === 0 ? (
           <div className="empty-state">
             <div style={{ fontSize: 40, marginBottom: 12 }}>&#x1F50D;</div>
-            <div style={{ fontSize: 16, fontWeight: 600 }}>No spots found</div>
+            <div style={{ fontSize: 16, fontWeight: 600 }}>No results</div>
             <div style={{ fontSize: 13, marginTop: 4 }}>
-              Try adjusting your filters
+              Try clearing filters.
             </div>
           </div>
         ) : (
           <div className="grid grid--4">
-            {filtered.map((s) => (
+            {filteredSpots.map((s) => (
               <SpotCard key={s.id} spot={s} onClick={setSelectedSpot} />
             ))}
           </div>

@@ -929,6 +929,66 @@ button {
   border-bottom: 1px solid var(--gray-100);
 }
 
+/* ─── Filters Bar ──────────────────────────────────────────── */
+.filters-bar {
+  margin-bottom: 24px;
+}
+
+.filters-bar__section {
+  margin-bottom: 12px;
+}
+
+.filters-bar__section:last-child {
+  margin-bottom: 0;
+}
+
+.filters-bar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .filters-bar__chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .filters-bar__chips::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.filters-bar__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.filters-bar__count {
+  color: var(--gray-500);
+  font-size: 13px;
+}
+
+.filters-bar__clear {
+  background: none;
+  border: none;
+  color: var(--green-600);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.filters-bar__clear:hover {
+  background: var(--green-50);
+}
+
 /* ─── States ────────────────────────────────────────────────── */
 .loading-state {
   text-align: center;
