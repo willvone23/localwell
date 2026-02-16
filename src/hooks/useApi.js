@@ -1,34 +1,42 @@
 import { useState, useEffect, useCallback } from "react";
+import { spots, trends, feedPosts } from "../data/embedded";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
+const EMBEDDED = {
+  "/spots": spots,
+  "/trends": trends,
+  "/feed": feedPosts,
+};
 
-async function apiFetch(path) {
-  const res = await fetch(`${BASE_URL}${path}`);
-  if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
-  }
-  return res.json();
-}
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export function useApi(path) {
-  const [state, setState] = useState({
-    data: null,
-    loading: true,
-    error: null,
+  const [state, setState] = useState(() => {
+    if (!BASE_URL) {
+      return { data: EMBEDDED[path] || null, loading: false, error: null };
+    }
+    return { data: null, loading: true, error: null };
   });
 
   const fetchData = useCallback(() => {
+    if (!BASE_URL) return;
+
     let cancelled = false;
 
-    apiFetch(path)
-      .then((result) => {
-        if (!cancelled) {
-          setState({ data: result, loading: false, error: null });
-        }
+    fetch(`${BASE_URL}${path}`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`${res.status}`);
+        return res.json();
       })
-      .catch((err) => {
+      .then((data) => {
+        if (!cancelled) setState({ data, loading: false, error: null });
+      })
+      .catch(() => {
         if (!cancelled) {
-          setState({ data: null, loading: false, error: err.message });
+          setState({
+            data: EMBEDDED[path] || null,
+            loading: false,
+            error: null,
+          });
         }
       });
 

@@ -4,7 +4,7 @@ import { ITINERARY_PREFS } from "../data/constants";
 const ITINERARY = [
   { time: "7:00 AM", title: "Morning Movement", spot: "Zone Fitness Academy", type: "Zone 2 Cardio (45 min)", icon: "\ud83c\udfc3", color: "#3B82F6" },
   { time: "8:30 AM", title: "Post-Workout Fuel", spot: "The Nut Lab", type: "Macadamia latte + protein bowl", icon: "\u2615", color: "#F59E0B" },
-  { time: "10:00 AM", title: "Recovery Session", spot: "Recovery Lab", type: "Cold plunge (4 min) + Red light (20 min)", icon: "\ud83e\uddf2", color: "#06B6D4" },
+  { time: "10:00 AM", title: "Recovery Session", spot: "Recovery Lab", type: "Cold plunge (4 min) + Red light (20 min)", icon: "\uD83E\uDDCA", color: "#06B6D4" },
   { time: "12:30 PM", title: "Lunch", spot: "Green Soul Kitchen", type: "Organic farm bowl, no seed oils", icon: "\ud83e\udd57", color: "#16A34A" },
   { time: "2:00 PM", title: "Supplement Stop", spot: "Functional Roots", type: "Lion's mane + magnesium glycinate", icon: "\ud83d\udc8a", color: "#8B5CF6" },
   { time: "4:30 PM", title: "Afternoon Class", spot: "Elevate Pilates", type: "Reformer class (55 min)", icon: "\ud83e\uddd8", color: "#EC4899" },

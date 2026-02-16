@@ -93,7 +93,7 @@ export default function FeedPage() {
                           : "#6B7280",
                       }}
                     >
-                      {liked.includes(post.id) ? "\u2764\uFE0F" : "\ud83e\ude76"}{" "}
+                      {liked.includes(post.id) ? "\u2764\uFE0F" : "\uD83E\uDD0D"}{" "}
                       {post.likes + (liked.includes(post.id) ? 1 : 0)}
                     </button>
                     <button className="action-btn">

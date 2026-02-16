@@ -131,7 +131,7 @@ export default function HomePage() {
                     }}
                   >
                     <span style={{ color: "#F59E0B", fontSize: 13 }}>
-                      &starf; {t.rating}
+                      {"\u2605"} {t.rating}
                     </span>
                     <span
                       style={{

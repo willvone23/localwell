@@ -38,7 +38,7 @@ export default function ProfilePage() {
           {[
             ["Lion's Mane", "Morning", "\ud83d\udc8a"],
             ["Zone 2 Cardio", "3x Week", "\ud83c\udfc3"],
-            ["Cold Plunge", "Daily", "\ud83e\uddf2"],
+            ["Cold Plunge", "Daily", "\uD83E\uDDCA"],
             ["Reformer Pilates", "2x Week", "\ud83e\uddd8"],
             ["No Seed Oils", "Strict", "\ud83e\udd69"],
           ].map(([item, freq, emoji]) => (

@@ -110,7 +110,7 @@ export default function SpotModal({ spot, onClose }) {
               <div
                 style={{ fontSize: 22, fontWeight: 800, color: "#F59E0B" }}
               >
-                &starf; {spot.rating}
+                {"\u2605"} {spot.rating}
               </div>
               <div style={{ fontSize: 12, color: "#6B7280" }}>
                 {spot.reviews} reviews

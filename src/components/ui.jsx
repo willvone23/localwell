@@ -1,7 +1,7 @@
 export function StarRating({ rating }) {
   return (
     <span style={{ color: "#F59E0B", fontSize: 13, fontWeight: 600 }}>
-      \u2605 {rating}
+      {"\u2605"} {rating}
     </span>
   );
 }
@@ -58,7 +58,7 @@ export function TrendingBadge({ pct }) {
         gap: 4,
       }}
     >
-      <span>\u2191</span> Trending +{pct}%
+      <span>{"\u2191"}</span> Trending +{pct}%
     </div>
   );
 }

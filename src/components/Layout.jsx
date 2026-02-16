@@ -15,7 +15,7 @@ export default function Layout() {
       <header className="app-header">
         <div className="header-inner">
           <NavLink to="/" className="logo-link" style={{ textDecoration: "none" }}>
-            <div className="logo-icon">&zwnj;</div>
+            <div className="logo-icon" />
             <span className="logo-text">LocalWell</span>
           </NavLink>
 
@@ -36,7 +36,7 @@ export default function Layout() {
 
           <div className="header-actions">
             <button className="icon-btn" aria-label="Notifications">
-              \ud83d\udd14
+              {"\uD83D\uDD14"}
             </button>
             <NavLink
               to="/profile"
