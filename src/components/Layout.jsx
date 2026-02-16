@@ -1,4 +1,5 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import { Avatar } from "./ui";
 
 const NAV_ITEMS = [
@@ -10,6 +11,17 @@ const NAV_ITEMS = [
 ];
 
 export default function Layout() {
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
+
+  const displayName = profile?.full_name || profile?.username || "Guest";
+  const initials = displayName
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -38,14 +50,23 @@ export default function Layout() {
             <button className="icon-btn" aria-label="Notifications">
               {"\uD83D\uDD14"}
             </button>
-            <NavLink
-              to="/profile"
-              className="profile-btn"
-              style={{ textDecoration: "none" }}
-            >
-              <Avatar initials="W" color="#16A34A" size={26} />
-              <span className="profile-name">Will</span>
-            </NavLink>
+            {user ? (
+              <NavLink
+                to="/profile"
+                className="profile-btn"
+                style={{ textDecoration: "none" }}
+              >
+                <Avatar initials={initials} color="#16A34A" size={26} />
+                <span className="profile-name">{displayName.split(" ")[0]}</span>
+              </NavLink>
+            ) : (
+              <button
+                className="btn-outline-sm"
+                onClick={() => navigate("/login")}
+              >
+                Sign In
+              </button>
+            )}
           </div>
         </div>
       </header>
