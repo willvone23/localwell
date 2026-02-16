@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { useApi } from "../hooks/useApi";
 import { useSpotFilters } from "../hooks/useSpotFilters";
 import FiltersBar from "../components/FiltersBar";
@@ -6,6 +7,7 @@ import SpotCard from "../components/SpotCard";
 import SpotModal from "../components/SpotModal";
 
 export default function HomePage() {
+  const { user, profile } = useAuth();
   const [selectedSpot, setSelectedSpot] = useState(null);
   const { data: spots, loading: spotsLoading, error: spotsError } = useApi("/spots");
   const { data: trends, loading: trendsLoading } = useApi("/trends");
@@ -34,7 +36,11 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-bg-circle hero-bg-circle--1" />
         <div className="hero-bg-circle hero-bg-circle--2" />
-        <h1 className="hero-title">Welcome back, Will</h1>
+        <h1 className="hero-title">
+          {user && profile?.full_name
+            ? `Welcome back, ${profile.full_name.split(" ")[0]}`
+            : "Welcome to LocalWell"}
+        </h1>
         <p className="hero-subtitle">
           Birmingham, AL &middot; 14 trending spots near you
         </p>
