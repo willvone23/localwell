@@ -1,6 +1,24 @@
+import { useNavigate } from "react-router-dom";
 import { Tag, TrendingBadge, StarRating } from "./ui";
+import { useAuth } from "../contexts/AuthContext";
+import { useSocial } from "../contexts/SocialContext";
 
 export default function SpotCard({ spot, onClick }) {
+  const { user } = useAuth();
+  const { isFavorited, toggleFavorite } = useSocial();
+  const navigate = useNavigate();
+
+  const favorited = isFavorited(spot.id);
+
+  const handleFav = (e) => {
+    e.stopPropagation();
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    toggleFavorite(spot);
+  };
+
   return (
     <article
       className="spot-card"
@@ -33,7 +51,23 @@ export default function SpotCard({ spot, onClick }) {
         <div style={{ position: "absolute", top: 10, left: 10 }}>
           <TrendingBadge pct={spot.trending} />
         </div>
-        <div style={{ position: "absolute", top: 10, right: 10 }}>
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            right: 10,
+            display: "flex",
+            gap: 6,
+            alignItems: "center",
+          }}
+        >
+          <button
+            onClick={handleFav}
+            aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+            className={`spot-card-fav ${favorited ? "spot-card-fav--active" : ""}`}
+          >
+            {favorited ? "\u2764\uFE0F" : "\uD83E\uDD0D"}
+          </button>
           <span
             style={{
               background: "#1A1A2E",

@@ -1,7 +1,29 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tag } from "./ui";
+import ReviewForm from "./ReviewForm";
+import { useAuth } from "../contexts/AuthContext";
+import { useSocial } from "../contexts/SocialContext";
+
+function formatTimeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
+}
 
 export default function SpotModal({ spot, onClose }) {
+  const { user } = useAuth();
+  const { addReview, getSpotReviews, isFavorited, toggleFavorite } = useSocial();
+  const navigate = useNavigate();
+
+  const spotReviews = getSpotReviews(spot.id);
+  const favorited = isFavorited(spot.id);
+
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -13,6 +35,15 @@ export default function SpotModal({ spot, onClose }) {
       document.body.style.overflow = "";
     };
   }, [onClose]);
+
+  const avgRating =
+    spotReviews.length > 0
+      ? (
+          spotReviews.reduce((sum, r) => sum + r.rating, 0) / spotReviews.length
+        ).toFixed(1)
+      : spot.rating;
+
+  const totalReviews = spot.reviews + spotReviews.length;
 
   return (
     <div
@@ -75,6 +106,18 @@ export default function SpotModal({ spot, onClose }) {
           >
             &times;
           </button>
+          <button
+            onClick={() => (user ? toggleFavorite(spot) : navigate("/login"))}
+            aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+            className={`spot-fav-btn ${favorited ? "spot-fav-btn--active" : ""}`}
+            style={{
+              position: "absolute",
+              top: 16,
+              right: 60,
+            }}
+          >
+            {favorited ? "\u2764\uFE0F" : "\uD83E\uDD0D"}
+          </button>
         </div>
         <div style={{ padding: "24px 28px" }}>
           <div
@@ -110,10 +153,10 @@ export default function SpotModal({ spot, onClose }) {
               <div
                 style={{ fontSize: 22, fontWeight: 800, color: "#F59E0B" }}
               >
-                {"\u2605"} {spot.rating}
+                {"\u2605"} {avgRating}
               </div>
               <div style={{ fontSize: 12, color: "#6B7280" }}>
-                {spot.reviews} reviews
+                {totalReviews} reviews
               </div>
             </div>
           </div>
@@ -163,6 +206,78 @@ export default function SpotModal({ spot, onClose }) {
               <Tag key={t} text={t} />
             ))}
           </div>
+
+          {/* Reviews Section */}
+          <div className="spot-reviews-section">
+            <h3 className="spot-reviews-title">
+              Reviews ({spotReviews.length})
+            </h3>
+
+            {user ? (
+              <ReviewForm
+                spotId={spot.id}
+                spotName={spot.name}
+                onSubmit={addReview}
+              />
+            ) : (
+              <div className="review-login-prompt">
+                <p>
+                  <button
+                    className="auth-toggle-btn"
+                    onClick={() => {
+                      onClose();
+                      navigate("/login");
+                    }}
+                  >
+                    Sign in
+                  </button>{" "}
+                  to leave a review
+                </p>
+              </div>
+            )}
+
+            {spotReviews.length > 0 && (
+              <div className="spot-reviews-list">
+                {spotReviews.map((review) => (
+                  <div key={review.id} className="review-item">
+                    <div className="review-item__header">
+                      <div
+                        className="review-item__avatar"
+                        style={{ background: "#16A34A" }}
+                      >
+                        {review.userInitials}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div className="review-item__name">
+                          {review.userName}
+                        </div>
+                        <div className="review-item__meta">
+                          <span className="review-item__stars">
+                            {Array.from({ length: 5 }, (_, i) => (
+                              <span
+                                key={i}
+                                style={{
+                                  color:
+                                    i < review.rating ? "#F59E0B" : "#E5E7EB",
+                                }}
+                              >
+                                {"\u2605"}
+                              </span>
+                            ))}
+                          </span>
+                          <span className="review-item__time">
+                            {formatTimeAgo(review.createdAt)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="review-item__text">{review.text}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div
             style={{
               background: "#F0FDF4",
