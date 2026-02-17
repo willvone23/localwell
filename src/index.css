@@ -1113,3 +1113,455 @@ button {
 .auth-toggle-btn:hover {
   text-decoration: underline;
 }
+
+/* ─── Phase 3: Reviews & Social ────────────────────────────── */
+
+/* Favorite Buttons */
+.spot-fav-btn {
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s;
+}
+
+.spot-fav-btn:hover {
+  transform: scale(1.1);
+}
+
+.spot-fav-btn--active {
+  background: #fef2f2;
+}
+
+.spot-card-fav {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+}
+
+.spot-card-fav:hover {
+  transform: scale(1.15);
+}
+
+.spot-card-fav--active {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Review Form */
+.review-form {
+  background: var(--gray-50);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.review-form__stars {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.review-star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--gray-200);
+  padding: 0 2px;
+  transition: transform 0.1s, color 0.1s;
+}
+
+.review-star:hover {
+  transform: scale(1.2);
+}
+
+.review-star--active {
+  color: var(--amber-400);
+}
+
+.review-form__rating-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-500);
+  margin-left: 8px;
+}
+
+.review-form__textarea {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.review-form__textarea:focus {
+  border-color: var(--green-600);
+}
+
+.review-form__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.review-form__charcount {
+  font-size: 12px;
+  color: var(--gray-400);
+}
+
+.review-form__submit {
+  padding: 8px 20px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.review-form-success {
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.review-form-success p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--green-600);
+  font-weight: 600;
+}
+
+.review-login-prompt {
+  background: var(--gray-50);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.review-login-prompt p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--gray-500);
+}
+
+/* Reviews Section in Spot Modal */
+.spot-reviews-section {
+  border-top: 1px solid var(--gray-200);
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.spot-reviews-title {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.spot-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-item {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.review-item__header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-item__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.review-item__name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gray-900);
+}
+
+.review-item__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-item__stars {
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.review-item__time {
+  font-size: 11px;
+  color: var(--gray-400);
+}
+
+.review-item__text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+/* Feed Badges */
+.feed-badge {
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.feed-badge--review {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.feed-badge--fav {
+  background: #fce7f3;
+  color: #db2777;
+}
+
+.review-rating-inline {
+  display: inline-flex;
+  gap: 1px;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+/* New Post Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.new-post-modal {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  padding: 24px;
+}
+
+.new-post-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.new-post-modal__textarea {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  margin-bottom: 12px;
+}
+
+.new-post-modal__textarea:focus {
+  border-color: var(--green-600);
+}
+
+.new-post-modal__input {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  margin-bottom: 12px;
+}
+
+.new-post-modal__input:focus {
+  border-color: var(--green-600);
+}
+
+.new-post-modal__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Profile Tabs */
+.profile-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--gray-200);
+  padding-bottom: 0;
+}
+
+.profile-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-500);
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.profile-tab:hover {
+  color: var(--gray-700);
+}
+
+.profile-tab--active {
+  color: var(--green-600);
+  border-bottom-color: var(--green-600);
+  font-weight: 700;
+}
+
+/* Profile Review Cards */
+.profile-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .profile-reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-review-card {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.profile-review-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.profile-review-card__spot {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.profile-review-card__time {
+  font-size: 11px;
+  color: var(--gray-400);
+}
+
+.profile-review-card__stars {
+  margin-bottom: 10px;
+}
+
+.profile-review-card__text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+/* Saved Spot Cards */
+.saved-spot-card {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.saved-spot-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.saved-spot-card__img-wrap {
+  height: 140px;
+  overflow: hidden;
+}
+
+.saved-spot-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.saved-spot-card__body {
+  padding: 12px 14px;
+}
+
+.saved-spot-card__name {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.saved-spot-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--gray-500);
+}
