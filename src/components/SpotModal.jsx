@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tag } from "./ui";
 import ReviewForm from "./ReviewForm";
+import SpotLocationMap from "./SpotLocationMap";
 import { useAuth } from "../contexts/AuthContext";
 import { useSocial } from "../contexts/SocialContext";
 
@@ -291,24 +292,40 @@ export default function SpotModal({ spot, onClose }) {
             >
               Location
             </div>
-            <div
-              style={{
-                background: "#D1FAE5",
-                borderRadius: 8,
-                height: 120,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#16A34A",
-                fontWeight: 600,
-                fontSize: 14,
-              }}
-            >
-              Map View &middot; {spot.address}
-            </div>
+            {spot.lat && spot.lng ? (
+              <SpotLocationMap
+                lat={spot.lat}
+                lng={spot.lng}
+                name={spot.address}
+              />
+            ) : (
+              <div
+                style={{
+                  background: "#D1FAE5",
+                  borderRadius: 8,
+                  height: 120,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#16A34A",
+                  fontWeight: 600,
+                  fontSize: 14,
+                }}
+              >
+                {spot.address || "Location unavailable"}
+              </div>
+            )}
           </div>
-          <button
+          <a
+            href={
+              spot.lat && spot.lng
+                ? `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lng}`
+                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.address || spot.name)}`
+            }
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
+              display: "block",
               width: "100%",
               background: "linear-gradient(135deg, #16A34A, #4CAF50)",
               color: "#fff",
@@ -318,10 +335,13 @@ export default function SpotModal({ spot, onClose }) {
               fontSize: 15,
               fontWeight: 700,
               cursor: "pointer",
+              textAlign: "center",
+              textDecoration: "none",
+              boxSizing: "border-box",
             }}
           >
             Get Directions
-          </button>
+          </a>
         </div>
       </div>
     </div>
