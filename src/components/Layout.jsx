@@ -74,6 +74,42 @@ export default function Layout() {
       <main className="app-content">
         <Outlet />
       </main>
+
+      {/* Mobile bottom navigation */}
+      <nav className="mobile-nav" aria-label="Mobile navigation">
+        {NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === "/"}
+            className={({ isActive }) =>
+              `mobile-nav__item${isActive ? " mobile-nav__item--active" : ""}`
+            }
+          >
+            <span className="mobile-nav__icon">{item.icon}</span>
+            <span className="mobile-nav__label">{item.label}</span>
+          </NavLink>
+        ))}
+        {user ? (
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `mobile-nav__item${isActive ? " mobile-nav__item--active" : ""}`
+            }
+          >
+            <span className="mobile-nav__icon">{"\uD83D\uDC64"}</span>
+            <span className="mobile-nav__label">Profile</span>
+          </NavLink>
+        ) : (
+          <NavLink
+            to="/login"
+            className="mobile-nav__item"
+          >
+            <span className="mobile-nav__icon">{"\uD83D\uDC64"}</span>
+            <span className="mobile-nav__label">Sign In</span>
+          </NavLink>
+        )}
+      </nav>
     </div>
   );
 }
