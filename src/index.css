@@ -1565,3 +1565,122 @@ button {
   font-size: 12px;
   color: var(--gray-500);
 }
+
+/* ─── Maps (Leaflet) ───────────────────────────────────────── */
+
+.spot-map-container {
+  height: 400px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid var(--gray-200);
+}
+
+@media (max-width: 768px) {
+  .spot-map-container {
+    height: 280px;
+  }
+}
+
+/* Custom map markers */
+.spot-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.spot-marker__pin {
+  width: 28px;
+  height: 36px;
+  background: var(--green-600);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.spot-marker__pin::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spot-marker__pin--active {
+  background: #F59E0B;
+  width: 34px;
+  height: 42px;
+  border-width: 4px;
+}
+
+.spot-marker--active {
+  z-index: 1000 !important;
+}
+
+/* Map popup */
+.map-popup {
+  font-family: "DM Sans", sans-serif;
+  line-height: 1.5;
+}
+
+.map-popup strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.map-popup__meta {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+
+.map-popup__rating {
+  font-size: 13px;
+  color: var(--amber-400);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Leaflet popup overrides */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px !important;
+  font-family: "DM Sans", sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Spot location map (in modal) */
+.spot-location-map {
+  position: relative;
+  height: 140px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.spot-location-map__label {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-700);
+  z-index: 400;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}

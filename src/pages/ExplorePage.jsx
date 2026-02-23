@@ -4,6 +4,7 @@ import { useSpotFilters } from "../hooks/useSpotFilters";
 import FiltersBar from "../components/FiltersBar";
 import SpotCard from "../components/SpotCard";
 import SpotModal from "../components/SpotModal";
+import SpotMap from "../components/SpotMap";
 
 export default function ExplorePage() {
   const [sortBy, setSortBy] = useState("trending");
@@ -74,36 +75,13 @@ export default function ExplorePage() {
         </button>
       </div>
 
-      {/* Map Placeholder */}
+      {/* Interactive Map */}
       {showMap && (
-        <div className="map-placeholder">
-          <div style={{ fontSize: 40, marginBottom: 12 }}>&#x1F5FA;&#xFE0F;</div>
-          <div
-            style={{
-              fontWeight: 700,
-              color: "#166534",
-              fontSize: 16,
-              marginBottom: 4,
-            }}
-          >
-            Interactive Map
-          </div>
-          <div style={{ color: "#16A34A", fontSize: 13 }}>
-            {resultCount} healthy spots plotted near Birmingham, AL
-          </div>
-          <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap", justifyContent: "center" }}>
-            {filteredSpots.slice(0, 4).map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setSelectedSpot(s)}
-                className="map-spot-chip"
-              >
-                <span className="map-spot-dot" />
-                {s.name}
-              </button>
-            ))}
-          </div>
-        </div>
+        <SpotMap
+          spots={filteredSpots}
+          selectedSpot={selectedSpot}
+          onSpotClick={setSelectedSpot}
+        />
       )}
 
       {/* Results */}
