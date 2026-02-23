@@ -142,7 +142,12 @@ button {
   cursor: pointer;
   font-size: 20px;
   color: var(--gray-500);
-  padding: 4px;
+  padding: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profile-btn {
@@ -1121,8 +1126,8 @@ button {
   background: #fff;
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   font-size: 18px;
   display: flex;
@@ -1144,10 +1149,10 @@ button {
   background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1183,7 +1188,12 @@ button {
   cursor: pointer;
   font-size: 24px;
   color: var(--gray-200);
-  padding: 0 2px;
+  padding: 8px 4px;
+  min-width: 40px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.1s, color 0.1s;
 }
 
@@ -1698,4 +1708,214 @@ button {
   color: var(--gray-700);
   z-index: 400;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ─── SpotCard (CSS-based) ─────────────────────────────────── */
+.spot-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #f3f4f6;
+}
+
+.spot-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.spot-card:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.spot-card__img-wrap {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+/* ─── Modal (CSS-based) ────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-container {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-img-wrap {
+  position: relative;
+  height: 260px;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-body {
+  padding: 24px 28px;
+}
+
+/* ─── Mobile Bottom Navigation ─────────────────────────────── */
+.mobile-nav {
+  display: none;
+}
+
+/* ─── Touch/Active States ──────────────────────────────────── */
+.spot-fav-btn:active,
+.spot-card-fav:active {
+  transform: scale(0.9);
+}
+
+.nav-link:active {
+  background: var(--gray-100);
+}
+
+.pill-btn:active {
+  opacity: 0.8;
+}
+
+.toggle-btn:active {
+  opacity: 0.8;
+}
+
+/* ─── Mobile Responsive (768px) ────────────────────────────── */
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid var(--gray-200);
+    z-index: 100;
+    padding: 6px 0;
+    padding-bottom: max(6px, env(safe-area-inset-bottom));
+    justify-content: space-around;
+  }
+
+  .mobile-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 8px;
+    text-decoration: none;
+    color: var(--gray-400);
+    font-size: 10px;
+    font-weight: 500;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    border-radius: 8px;
+    transition: color 0.15s;
+  }
+
+  .mobile-nav__item--active {
+    color: var(--green-600);
+    font-weight: 700;
+  }
+
+  .mobile-nav__icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .mobile-nav__label {
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  /* Add bottom padding to content so it's not hidden behind nav */
+  .app-content {
+    padding-bottom: 80px;
+  }
+
+  /* Modal goes full-screen on mobile */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-container {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .modal-img-wrap {
+    height: 200px;
+  }
+
+  .modal-body {
+    padding: 20px 16px;
+  }
+
+  .modal-close-btn {
+    top: 12px;
+    right: 12px;
+  }
+
+  /* Reduce card image height */
+  .spot-card__img-wrap {
+    height: 150px;
+  }
+
+  /* Spot location map in modal */
+  .spot-location-map {
+    height: 120px;
+  }
+}
+
+/* ─── Small Mobile (480px) ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .modal-img-wrap {
+    height: 160px;
+  }
+
+  .modal-body {
+    padding: 16px 14px;
+  }
+
+  .spot-card__img-wrap {
+    height: 140px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .section-title {
+    font-size: 17px;
+  }
 }

@@ -51,30 +51,14 @@ export default function SpotModal({ spot, onClose }) {
       role="dialog"
       aria-modal="true"
       aria-label={spot.name}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.6)",
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-      }}
+      className="modal-overlay"
       onClick={onClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{
-          background: "#fff",
-          borderRadius: 20,
-          width: "100%",
-          maxWidth: 600,
-          maxHeight: "90vh",
-          overflowY: "auto",
-        }}
+        className="modal-container"
       >
-        <div style={{ position: "relative", height: 260 }}>
+        <div className="modal-img-wrap">
           <img
             src={spot.img}
             alt={spot.name}
@@ -88,22 +72,7 @@ export default function SpotModal({ spot, onClose }) {
           <button
             onClick={onClose}
             aria-label="Close"
-            style={{
-              position: "absolute",
-              top: 16,
-              right: 16,
-              background: "#fff",
-              border: "none",
-              borderRadius: "50%",
-              width: 36,
-              height: 36,
-              cursor: "pointer",
-              fontSize: 18,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-            }}
+            className="modal-close-btn"
           >
             &times;
           </button>
@@ -120,7 +89,7 @@ export default function SpotModal({ spot, onClose }) {
             {favorited ? "\u2764\uFE0F" : "\uD83E\uDD0D"}
           </button>
         </div>
-        <div style={{ padding: "24px 28px" }}>
+        <div className="modal-body">
           <div
             style={{
               display: "flex",

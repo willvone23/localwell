@@ -23,25 +23,8 @@ export default function SpotCard({ spot, onClick }) {
     <article
       className="spot-card"
       onClick={() => onClick(spot)}
-      style={{
-        background: "#fff",
-        borderRadius: 16,
-        overflow: "hidden",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-        cursor: "pointer",
-        transition: "transform 0.2s, box-shadow 0.2s",
-        border: "1px solid #F3F4F6",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-3px)";
-        e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.12)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "none";
-        e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.07)";
-      }}
     >
-      <div style={{ position: "relative", height: 180, overflow: "hidden" }}>
+      <div className="spot-card__img-wrap">
         <img
           src={spot.img}
           alt={spot.name}
