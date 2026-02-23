@@ -1622,6 +1622,21 @@ button {
   z-index: 1000 !important;
 }
 
+/* User location marker */
+.user-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.user-marker__dot {
+  width: 18px;
+  height: 18px;
+  background: #3B82F6;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
 /* Map popup */
 .map-popup {
   font-family: "DM Sans", sans-serif;

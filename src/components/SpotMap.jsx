@@ -1,5 +1,12 @@
-import { useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { useEffect, useRef, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Circle,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
 
 // Custom green marker icon
@@ -19,28 +26,81 @@ const activeIcon = new L.DivIcon({
   popupAnchor: [0, -42],
 });
 
-function FitBounds({ spots }) {
+// Blue "you are here" dot
+const userIcon = new L.DivIcon({
+  className: "user-marker",
+  html: `<div class="user-marker__dot"></div>`,
+  iconSize: [18, 18],
+  iconAnchor: [9, 9],
+});
+
+function FitBounds({ spots, userLocation }) {
   const map = useMap();
-  const prevLen = useRef(spots.length);
+  const fitted = useRef(false);
 
   useEffect(() => {
-    if (spots.length === 0) return;
-    if (spots.length !== prevLen.current || prevLen.current === spots.length) {
-      const bounds = L.latLngBounds(
-        spots.filter((s) => s.lat && s.lng).map((s) => [s.lat, s.lng])
-      );
-      if (bounds.isValid()) {
-        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
-      }
+    const points = spots
+      .filter((s) => s.lat && s.lng)
+      .map((s) => [s.lat, s.lng]);
+
+    if (userLocation) {
+      points.push(userLocation);
     }
-    prevLen.current = spots.length;
-  }, [spots, map]);
+
+    if (points.length === 0) return;
+    if (fitted.current) return;
+
+    const bounds = L.latLngBounds(points);
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+      fitted.current = true;
+    }
+  }, [spots, userLocation, map]);
+
+  // Re-fit when filtered spots change
+  useEffect(() => {
+    const points = spots
+      .filter((s) => s.lat && s.lng)
+      .map((s) => [s.lat, s.lng]);
+
+    if (userLocation) {
+      points.push(userLocation);
+    }
+
+    if (points.length === 0) return;
+
+    const bounds = L.latLngBounds(points);
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+    }
+  }, [spots.length, map]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return null;
+}
+
+function UserLocationTracker({ onLocation }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        onLocation([pos.coords.latitude, pos.coords.longitude]);
+      },
+      () => {
+        // Geolocation denied or unavailable — no action needed
+      },
+      { enableHighAccuracy: false, timeout: 8000 }
+    );
+  }, [map, onLocation]);
 
   return null;
 }
 
 export default function SpotMap({ spots, selectedSpot, onSpotClick }) {
-  const center = [33.749, -84.388]; // Birmingham, AL area default
+  const [userLocation, setUserLocation] = useState(null);
+  const center = [33.749, -84.388]; // fallback center
 
   return (
     <div className="spot-map-container">
@@ -54,7 +114,33 @@ export default function SpotMap({ spots, selectedSpot, onSpotClick }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <FitBounds spots={spots} />
+        <UserLocationTracker onLocation={setUserLocation} />
+        <FitBounds spots={spots} userLocation={userLocation} />
+
+        {/* User location marker */}
+        {userLocation && (
+          <>
+            <Circle
+              center={userLocation}
+              radius={200}
+              pathOptions={{
+                color: "#3B82F6",
+                fillColor: "#3B82F6",
+                fillOpacity: 0.1,
+                weight: 1,
+              }}
+            />
+            <Marker position={userLocation} icon={userIcon}>
+              <Popup>
+                <div className="map-popup">
+                  <strong>You are here</strong>
+                </div>
+              </Popup>
+            </Marker>
+          </>
+        )}
+
+        {/* Spot markers */}
         {spots
           .filter((s) => s.lat && s.lng)
           .map((spot) => (
