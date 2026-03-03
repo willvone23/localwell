@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -8,6 +8,7 @@ import {
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
+import { formatTagLabel } from "../hooks/useSpotFilters";
 
 // Custom green marker icon
 const spotIcon = new L.DivIcon({
@@ -36,7 +37,7 @@ const userIcon = new L.DivIcon({
 
 function FitBounds({ spots, userLocation }) {
   const map = useMap();
-  const fitted = useRef(false);
+  const prevLen = useRef(null);
 
   useEffect(() => {
     const points = spots
@@ -48,32 +49,16 @@ function FitBounds({ spots, userLocation }) {
     }
 
     if (points.length === 0) return;
-    if (fitted.current) return;
+
+    // Only refit when spot count changes (filter applied) or first load
+    if (prevLen.current === points.length) return;
+    prevLen.current = points.length;
 
     const bounds = L.latLngBounds(points);
     if (bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
-      fitted.current = true;
+      map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
     }
   }, [spots, userLocation, map]);
-
-  // Re-fit when filtered spots change
-  useEffect(() => {
-    const points = spots
-      .filter((s) => s.lat && s.lng)
-      .map((s) => [s.lat, s.lng]);
-
-    if (userLocation) {
-      points.push(userLocation);
-    }
-
-    if (points.length === 0) return;
-
-    const bounds = L.latLngBounds(points);
-    if (bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
-    }
-  }, [spots.length, map]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
 }
@@ -89,7 +74,7 @@ function UserLocationTracker({ onLocation }) {
         onLocation([pos.coords.latitude, pos.coords.longitude]);
       },
       () => {
-        // Geolocation denied or unavailable — no action needed
+        // Geolocation denied or unavailable
       },
       { enableHighAccuracy: false, timeout: 8000 }
     );
@@ -98,9 +83,50 @@ function UserLocationTracker({ onLocation }) {
   return null;
 }
 
+function SpotPopup({ spot, onView }) {
+  return (
+    <div className="map-popup">
+      {spot.img && (
+        <div className="map-popup__img-wrap">
+          <img src={spot.img} alt={spot.name} className="map-popup__img" />
+        </div>
+      )}
+      <div className="map-popup__body">
+        <strong>{spot.name}</strong>
+        <div className="map-popup__meta">
+          {spot.type} &middot; {spot.price}
+        </div>
+        <div className="map-popup__rating">
+          {"\u2605"} {spot.rating}
+          <span className="map-popup__reviews">({spot.reviews})</span>
+        </div>
+        {spot.tags && spot.tags.length > 0 && (
+          <div className="map-popup__tags">
+            {spot.tags.slice(0, 3).map((t) => (
+              <span key={t} className="map-popup__tag">
+                {formatTagLabel(t)}
+              </span>
+            ))}
+          </div>
+        )}
+        <button
+          className="map-popup__view-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            onView(spot);
+          }}
+        >
+          View Details
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function SpotMap({ spots, selectedSpot, onSpotClick }) {
   const [userLocation, setUserLocation] = useState(null);
   const center = [33.749, -84.388]; // fallback center
+  const handleLocation = useCallback((loc) => setUserLocation(loc), []);
 
   return (
     <div className="spot-map-container">
@@ -111,10 +137,10 @@ export default function SpotMap({ spots, selectedSpot, onSpotClick }) {
         style={{ height: "100%", width: "100%", borderRadius: 16 }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         />
-        <UserLocationTracker onLocation={setUserLocation} />
+        <UserLocationTracker onLocation={handleLocation} />
         <FitBounds spots={spots} userLocation={userLocation} />
 
         {/* User location marker */}
@@ -133,7 +159,9 @@ export default function SpotMap({ spots, selectedSpot, onSpotClick }) {
             <Marker position={userLocation} icon={userIcon}>
               <Popup>
                 <div className="map-popup">
-                  <strong>You are here</strong>
+                  <div className="map-popup__body">
+                    <strong>You are here</strong>
+                  </div>
                 </div>
               </Popup>
             </Marker>
@@ -157,15 +185,7 @@ export default function SpotMap({ spots, selectedSpot, onSpotClick }) {
               }}
             >
               <Popup>
-                <div className="map-popup">
-                  <strong>{spot.name}</strong>
-                  <div className="map-popup__meta">
-                    {spot.type} &middot; {spot.price}
-                  </div>
-                  <div className="map-popup__rating">
-                    {"\u2605"} {spot.rating} ({spot.reviews})
-                  </div>
-                </div>
+                <SpotPopup spot={spot} onView={onSpotClick} />
               </Popup>
             </Marker>
           ))}
