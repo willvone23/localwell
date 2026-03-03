@@ -3,6 +3,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { SocialProvider } from "./contexts/SocialContext";
 import Layout from "./components/Layout";
 import ErrorBoundary from "./components/ErrorBoundary";
+import OfflineIndicator from "./components/OfflineIndicator";
 import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
 import TrendsPage from "./pages/TrendsPage";
@@ -17,6 +18,7 @@ export default function App() {
       <AuthProvider>
         <SocialProvider>
           <ErrorBoundary>
+            <OfflineIndicator />
             <Routes>
               <Route element={<Layout />}>
                 <Route index element={<HomePage />} />

@@ -23,11 +23,10 @@ export default function ExplorePage() {
     togglePrice,
     activeTags,
     toggleTag,
-    availableTags,
     hasActiveFilters,
     clearFilters,
     resultCount,
-  } = useSpotFilters(spots, { sortBy });
+  } = useSpotFilters(spots, { sortBy, syncUrl: true });
 
   return (
     <div>
@@ -42,7 +41,6 @@ export default function ExplorePage() {
         onPriceToggle={togglePrice}
         activeTags={activeTags}
         onTagToggle={toggleTag}
-        availableTags={availableTags}
         hasActiveFilters={hasActiveFilters}
         onClear={clearFilters}
         resultCount={resultCount}

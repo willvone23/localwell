@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <rect width="180" height="180" rx="30" fill="#16a34a"/>
+  <text x="90" y="118" font-family="Arial, sans-serif" font-size="96" font-weight="bold" fill="white" text-anchor="middle">L</text>
+  <circle cx="132" cy="48" r="16" fill="#22c55e"/>
+  <path d="M124 48 L130 54 L142 42" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

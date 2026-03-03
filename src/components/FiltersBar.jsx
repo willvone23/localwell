@@ -1,5 +1,4 @@
-import { SPOT_TYPES } from "../data/constants";
-import { formatTagLabel } from "../hooks/useSpotFilters";
+import { SPOT_TYPES, HEALTH_FILTER_GROUPS } from "../data/constants";
 
 const PRICES = ["$", "$$", "$$$", "$$$$"];
 
@@ -11,7 +10,6 @@ const PRICES = ["$", "$$", "$$$", "$$$$"];
  *  - activeType, onTypeChange       — category type filter
  *  - activePrices, onPriceToggle    — price filter (multi-select)
  *  - activeTags, onTagToggle        — tag chips (multi-select)
- *  - availableTags                  — derived from data
  *  - hasActiveFilters, onClear      — clear state
  *  - resultCount                    — number of results
  *  - compact                        — if true, hide category row (for HomePage)
@@ -25,7 +23,6 @@ export default function FiltersBar({
   onPriceToggle,
   activeTags,
   onTagToggle,
-  availableTags,
   hasActiveFilters,
   onClear,
   resultCount,
@@ -59,7 +56,7 @@ export default function FiltersBar({
         </div>
       )}
 
-      {/* Price + Tag chips */}
+      {/* Price + Grouped Health Filters */}
       <div className="filter-panel">
         {/* Price row */}
         <div className="filters-bar__section">
@@ -77,21 +74,23 @@ export default function FiltersBar({
           </div>
         </div>
 
-        {/* Tag chips */}
-        <div className="filters-bar__section">
-          <span className="filter-panel-label">Health Filters</span>
-          <div className="filters-bar__chips">
-            {availableTags.map((t) => (
-              <button
-                key={t}
-                onClick={() => onTagToggle(t)}
-                className={`pill-btn${activeTags.includes(t) ? " pill-btn--active" : ""}`}
-              >
-                {formatTagLabel(t)}
-              </button>
-            ))}
+        {/* Grouped health filters (Dietary, Fitness, Wellness) */}
+        {HEALTH_FILTER_GROUPS.map((group) => (
+          <div key={group.label} className="filters-bar__section">
+            <span className="filter-panel-label">{group.label}</span>
+            <div className="filters-bar__chips">
+              {group.filters.map((f) => (
+                <button
+                  key={f.id}
+                  onClick={() => onTagToggle(f.id)}
+                  className={`pill-btn${activeTags.includes(f.id) ? " pill-btn--active" : ""}`}
+                >
+                  {f.name}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
 
       {/* Meta row: result count + clear */}
