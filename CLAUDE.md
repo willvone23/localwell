@@ -40,11 +40,11 @@ LocalWell is a "healthy Yelp" — a platform for discovering restaurants, gyms, 
 - [x] Service worker for offline caching of shell + visited pages
 - [x] "Add to Home Screen" prompt
 
-### Phase 3: Search & Filters
-- [ ] Full-text search across business names, tags, descriptions
-- [ ] Health filter system (dietary: vegan, gluten-free, keto; fitness: yoga, HIIT, climbing; wellness: massage, acupuncture, meditation)
-- [ ] Filter persistence in URL params
-- [ ] Search results page with map view
+### Phase 3: Search & Filters (DONE)
+- [x] Full-text search across business names, tags, descriptions
+- [x] Health filter system (dietary: vegan, gluten-free, keto; fitness: yoga, HIIT, climbing; wellness: massage, acupuncture, meditation)
+- [x] Filter persistence in URL params
+- [x] Search results page with map view
 
 ### Phase 4: Geolocation
 - [ ] Browser Geolocation API integration

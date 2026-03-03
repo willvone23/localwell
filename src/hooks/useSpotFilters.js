@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 
 /**
  * Formats a kebab-case tag into a display label.
@@ -13,22 +14,55 @@ export function formatTagLabel(tag) {
 
 /**
  * Reusable hook for filtering and searching spots.
+ * Persists filter state in URL search params when syncUrl is true.
  *
  * @param {Array} spots - array of spot objects
  * @param {Object} options
  * @param {string} options.sortBy - "trending" | "rating"
+ * @param {boolean} options.syncUrl - persist filters in URL params (default false)
  * @returns filter state, setters, filtered results
  */
-export function useSpotFilters(spots, { sortBy = "trending" } = {}) {
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [activeType, setActiveType] = useState("All");
-  const [activePrices, setActivePrices] = useState([]);
-  const [activeTags, setActiveTags] = useState([]);
+export function useSpotFilters(spots, { sortBy = "trending", syncUrl = false } = {}) {
+  // Always call the hook (Rules of Hooks) — just ignore it when syncUrl is false
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Debounce search input (250ms)
+  // Initialize state from URL params when syncUrl is enabled
+  const initFromParams = (key, fallback) => {
+    if (!syncUrl) return fallback;
+    const val = searchParams.get(key);
+    return val !== null ? val : fallback;
+  };
+
+  const initArrayFromParams = (key) => {
+    if (!syncUrl) return [];
+    const val = searchParams.get(key);
+    return val ? val.split(",") : [];
+  };
+
+  const [search, setSearch] = useState(() => initFromParams("q", ""));
+  const [debouncedSearch, setDebouncedSearch] = useState(() => initFromParams("q", ""));
+  const [activeType, setActiveType] = useState(() => initFromParams("type", "All"));
+  const [activePrices, setActivePrices] = useState(() => initArrayFromParams("price"));
+  const [activeTags, setActiveTags] = useState(() => initArrayFromParams("tags"));
+
+  // Sync state to URL params
+  const syncToUrl = useCallback(() => {
+    if (!syncUrl) return;
+    const params = new URLSearchParams();
+    if (debouncedSearch) params.set("q", debouncedSearch);
+    if (activeType !== "All") params.set("type", activeType);
+    if (activePrices.length > 0) params.set("price", activePrices.join(","));
+    if (activeTags.length > 0) params.set("tags", activeTags.join(","));
+    setSearchParams(params, { replace: true });
+  }, [syncUrl, debouncedSearch, activeType, activePrices, activeTags, setSearchParams]);
+
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(search), 250);
+    syncToUrl();
+  }, [syncToUrl]);
+
+  // Debounce search input (300ms)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300);
     return () => clearTimeout(timer);
   }, [search]);
 
@@ -66,13 +100,15 @@ export function useSpotFilters(spots, { sortBy = "trending" } = {}) {
           !activeTags.some((tag) => s.tags.includes(tag))
         )
           return false;
-        // Search applies after filters (partial match on name, type, tags)
+        // Search applies after filters (partial match on name, type, tags, desc, address)
         if (debouncedSearch) {
           const q = debouncedSearch.toLowerCase();
           const matchName = s.name.toLowerCase().includes(q);
           const matchType = s.type.toLowerCase().includes(q);
           const matchTags = s.tags.some((t) => t.toLowerCase().includes(q));
-          if (!matchName && !matchType && !matchTags) return false;
+          const matchDesc = s.desc && s.desc.toLowerCase().includes(q);
+          const matchAddr = s.address && s.address.toLowerCase().includes(q);
+          if (!matchName && !matchType && !matchTags && !matchDesc && !matchAddr) return false;
         }
         return true;
       })

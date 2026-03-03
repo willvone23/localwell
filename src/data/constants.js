@@ -38,6 +38,45 @@ export const SPOT_TYPES = [
   "Health Store",
 ];
 
+export const HEALTH_FILTER_GROUPS = [
+  {
+    label: "Dietary",
+    filters: [
+      { id: "plant-based", name: "Vegan / Plant-Based" },
+      { id: "gluten-free", name: "Gluten-Free" },
+      { id: "keto-friendly", name: "Keto" },
+      { id: "organic", name: "Organic" },
+      { id: "no-seed-oils", name: "No Seed Oils" },
+      { id: "carnivore", name: "Carnivore" },
+      { id: "high-protein", name: "High Protein" },
+    ],
+  },
+  {
+    label: "Fitness",
+    filters: [
+      { id: "pilates", name: "Pilates" },
+      { id: "reformer", name: "Reformer" },
+      { id: "barre", name: "Barre" },
+      { id: "hiit", name: "HIIT" },
+      { id: "crossfit", name: "CrossFit" },
+      { id: "zone-2-cardio", name: "Zone 2" },
+      { id: "strength", name: "Strength" },
+    ],
+  },
+  {
+    label: "Wellness",
+    filters: [
+      { id: "cold-plunge", name: "Cold Plunge" },
+      { id: "sauna", name: "Sauna" },
+      { id: "red-light", name: "Red Light" },
+      { id: "recovery", name: "Recovery" },
+      { id: "adaptogens", name: "Adaptogens" },
+      { id: "supplements", name: "Supplements" },
+      { id: "biohacking", name: "Biohacking" },
+    ],
+  },
+];
+
 export const ITINERARY_PREFS = [
   { id: "keto", label: "Keto Eating", emoji: "\ud83e\udd69" },
   { id: "pilates", label: "Pilates / Barre", emoji: "\ud83e\uddd8" },

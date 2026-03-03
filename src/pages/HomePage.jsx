@@ -22,7 +22,6 @@ export default function HomePage() {
     togglePrice,
     activeTags,
     toggleTag,
-    availableTags,
     hasActiveFilters,
     clearFilters,
     resultCount,
@@ -167,7 +166,6 @@ export default function HomePage() {
           onPriceToggle={togglePrice}
           activeTags={activeTags}
           onTagToggle={toggleTag}
-          availableTags={availableTags}
           hasActiveFilters={hasActiveFilters}
           onClear={clearFilters}
           resultCount={resultCount}
