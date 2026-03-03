@@ -34,11 +34,11 @@ LocalWell is a "healthy Yelp" — a platform for discovering restaurants, gyms, 
 - [x] Modal sheet UI on mobile
 - [x] SessionStart hook for Claude Code automation
 
-### Phase 2: PWA & Offline
-- [ ] Add `manifest.json` with app name, icons, theme color
-- [ ] Add iOS meta tags (`apple-mobile-web-app-capable`, status bar, splash screens)
-- [ ] Service worker for offline caching of shell + visited pages
-- [ ] "Add to Home Screen" prompt
+### Phase 2: PWA & Offline (DONE)
+- [x] Add `manifest.json` with app name, icons, theme color
+- [x] Add iOS meta tags (`apple-mobile-web-app-capable`, status bar, splash screens)
+- [x] Service worker for offline caching of shell + visited pages
+- [x] "Add to Home Screen" prompt
 
 ### Phase 3: Search & Filters
 - [ ] Full-text search across business names, tags, descriptions
